@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RecruitFlow</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    
+    <!-- Global Base Styles for the Professional Black-Violet Aesthetic -->
+    <style>
+        body {
+            background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #0a0512 100%) !important;
+            background-attachment: fixed !important;
+            min-height: 100vh;
+            color: #f1f1f1;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        /* Glassmorphic Top Navigation */
+         .custom-navbar {
+            background: rgba(15, 7, 26, 0.75) !important;
+            /* backdrop-filter: blur(12px); */
+            /* -webkit-backdrop-filter: blur(12px); */
+            /* border-bottom: 1px solid rgba(138, 43, 226, 0.2); */
+            /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); */
+            /* position: relative; */
+            /* Top:-450px; */
+        }  
+
+        .navbar-brand-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #c79eff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            font-size: 1.4rem;
+            position: relative;
+            Top:-450px;
+            left:200px;
+            z-index: 1;
+        }
+
+        .user-tag {
+            background-color: rgba(138, 43, 226, 0.12);
+            border: 1px solid rgba(138, 43, 226, 0.25);
+            color: #d1c4e9 !important;
+            border-radius: 6px;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-nav-logout {
+            border: 1px solid rgba(255, 107, 107, 0.4) !important;
+            color: #ff6b6b !important;
+            background: transparent;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn-nav-logout:hover {
+            background: rgba(255, 107, 107, 0.15) !important;
+            color: #ff4a4a !important;
+            border-color: #ff4a4a !important;
+            transform: translateY(-1px);
+        }
+
+        /* Beautiful Glassmorphic Notifications */
+        .custom-alert {
+            background: rgba(20, 10, 35, 0.8) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 10px;
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 0.4s ease-out;
+        }
+        .custom-alert-success {
+            border-left: 4px solid #00e676 !important;
+            border-top: 1px solid rgba(0, 230, 118, 0.2) !important;
+            border-right: 1px solid rgba(0, 230, 118, 0.2) !important;
+            border-bottom: 1px solid rgba(0, 230, 118, 0.2) !important;
+        }
+        .custom-alert-danger {
+            border-left: 4px solid #ff1744 !important;
+            border-top: 1px solid rgba(255, 23, 68, 0.2) !important;
+            border-right: 1px solid rgba(255, 23, 68, 0.2) !important;
+            border-bottom: 1px solid rgba(255, 23, 68, 0.2) !important;
+        }
+
+        @@keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Styled Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar mb-5">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-gradient" href="/">RecruitFlow</a>
+            @if (User?.Identity?.IsAuthenticated == true)
+            {
+                <div class="d-flex align-items-center ms-auto">
+                    <span class="user-tag me-3">
+                        ⚡ <strong>@(User.IsInRole("Company") ? "Recruiter" : "Applicant")</strong>: @User.Identity!.Name
+                    </span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                        <button type="submit" class="btn btn-nav-logout btn-sm px-3">Logout</button>
+                    </form>
+                </div>
+            }
+        </div>
+    </nav>
+
+    <!-- Main Content Rendering Body Container -->
+    <div class="container pb-5">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert custom-alert custom-alert-success d-flex align-items-center mb-4" role="alert">
+                <span class="me-2">✅</span>
+                <div>@TempData["Success"]</div>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert custom-alert custom-alert-danger d-flex align-items-center mb-4" role="alert">
+                <span class="me-2">⚠️</span>
+                <div>@TempData["Error"]</div>
+            </div>
+        }
+        
+        @RenderBody()
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

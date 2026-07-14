@@ -1,0 +1,6 @@
+bin/
+obj/
+*.user
+.vs/
+wwwroot/resumes/*
+!wwwroot/resumes/.gitkeep

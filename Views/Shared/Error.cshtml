@@ -1,0 +1,102 @@
+@{
+    ViewData["Title"] = "Error";
+}
+
+<!-- Custom Styles for the Professional Black-Violet Error Page -->
+<style>
+    body {
+        background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #0a0512 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        color: #f1f1f1;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    .error-container {
+        background: rgba(20, 10, 35, 0.65);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 74, 74, 0.25);
+        border-radius: 16px;
+        padding: 3rem 2rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 
+                    0 0 25px rgba(255, 74, 74, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .error-container:hover {
+        border-color: rgba(255, 74, 74, 0.4);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 
+                    0 0 35px rgba(255, 74, 74, 0.1);
+    }
+
+    .error-icon {
+        font-size: 3.5rem;
+        color: #ff4a4a;
+        margin-bottom: 1.5rem;
+        display: inline-block;
+        animation: pulse 2s infinite ease-in-out;
+    }
+
+    .error-title {
+        background: linear-gradient(135deg, #ffffff 0%, #ffc7c7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .text-muted-custom {
+        color: #a194b8 !important;
+    }
+
+    .btn-gradient-violet {
+        background: linear-gradient(135deg, #8a2be2 0%, #6a0dad 100%);
+        border: none;
+        color: white;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-gradient-violet:hover {
+        background: linear-gradient(135deg, #9933ff 0%, #7a1fa2 100%);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+    }
+
+    .btn-gradient-violet:active {
+        transform: translateY(1px);
+    }
+
+    @@keyframes pulse {
+        0% { transform: scale(1); opacity: 0.9; }
+        50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 74, 74, 0.5)); }
+        100% { transform: scale(1); opacity: 0.9; }
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center w-100 m-0">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 error-container text-center">
+            
+            <div class="error-icon">⚠️</div>
+            
+            <h3 class="error-title mb-3">Something Went Wrong</h3>
+            
+            <p class="text-muted-custom mb-4 px-3">
+                An error occurred while processing your request. The server was unable to complete the operation.
+            </p>
+            
+            <a asp-controller="Account" asp-action="Login" class="btn btn-gradient-violet">
+                Back to Login
+            </a>
+            
+        </div>
+    </div>
+</div>

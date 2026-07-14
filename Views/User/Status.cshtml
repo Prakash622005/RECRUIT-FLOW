@@ -1,0 +1,174 @@
+@model JobApplication
+@{
+    ViewData["Title"] = "Application Status";
+}
+
+<!-- Custom Styles for the Premium Black-Violet Status Detail Page -->
+<style>
+    body {
+        background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #0a0512 100%);
+        min-height: 100vh;
+        color: #f1f1f1;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    .status-header {
+        background: linear-gradient(135deg, #ffffff 0%, #c79eff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    /* Premium Glassmorphic Layout Card Container */
+    .status-card {
+        background: rgba(20, 10, 35, 0.65);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(138, 43, 226, 0.2);
+        border-radius: 16px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 
+                    0 0 25px rgba(138, 43, 226, 0.05);
+    }
+
+    /* Layout Meta Labels */
+    .status-label {
+        color: #c79eff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+
+    /* Layout Meta Data Values */
+    .status-value {
+        color: #ffffff;
+        font-size: 1rem;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+
+    /* Subdued Divider for Data Rows */
+    .status-row {
+        border-bottom: 1px solid rgba(138, 43, 226, 0.12);
+    }
+
+    .status-row:last-of-type {
+        border-bottom: none;
+    }
+
+    /* Interview Info Sub-Section UI Block */
+    .interview-box {
+        background: rgba(46, 125, 50, 0.08);
+        border: 1px solid rgba(46, 125, 50, 0.3);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .interview-label {
+        color: #a5d6a7;
+        font-weight: 600;
+    }
+
+    /* Custom Color Themes for Badges */
+    .bg-custom-success { background-color: #2e7d32 !important; color: #e8f5e9; }
+    .bg-custom-danger { background-color: #c62828 !important; color: #ffebee; }
+    .bg-custom-pending { background-color: #512da8 !important; color: #ede7f6; }
+
+    /* Button Layout Styling */
+    .btn-violet-outline {
+        border: 1px solid rgba(199, 158, 255, 0.4);
+        color: #c79eff;
+        background: transparent;
+        padding: 0.6rem 1.5rem;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-violet-outline:hover {
+        background: rgba(138, 43, 226, 0.2);
+        color: #ffffff;
+        border-color: #8a2be2;
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="container py-4" style="max-width: 800px;">
+    <h3 class="status-header mb-4">Application Status Details</h3>
+    
+    <div class="status-card">
+        <dl class="row mb-0">
+            <div class="row status-row mx-0 px-0">
+                <dt class="col-sm-4 status-label">Job Role</dt>
+                <dd class="col-sm-8 status-value fw-bold">@Model.JobRole</dd>
+            </div>
+
+            <div class="row status-row mx-0 px-0">
+                <dt class="col-sm-4 status-label">Applied On</dt>
+                <dd class="col-sm-8 status-value">@Model.AppliedOn.ToString("dd MMM yyyy, hh:mm tt")</dd>
+            </div>
+
+            <div class="row status-row mx-0 px-0">
+                <dt class="col-sm-4 status-label">Experience</dt>
+                <dd class="col-sm-8 status-value">@Model.ExperienceYears year(s)</dd>
+            </div>
+
+            <div class="row status-row mx-0 px-0">
+                <dt class="col-sm-4 status-label">Current CTC</dt>
+                <dd class="col-sm-8 status-value">₹ @Model.CurrentCTC.ToString("N2")</dd>
+            </div>
+
+            <div class="row status-row mx-0 px-0">
+                <dt class="col-sm-4 status-label">Expected CTC</dt>
+                <dd class="col-sm-8 status-value">₹ @Model.ExpectedCTC.ToString("N2")</dd>
+            </div>
+
+            <div class="row status-row mx-0 px-0">
+                <dt class="col-sm-4 status-label">Status</dt>
+                <dd class="col-sm-8 status-value">
+                    @{
+                        var badgeClass = Model.Status switch
+                        {
+                            ApplicationStatus.SelectedForInterview => "bg-custom-success",
+                            ApplicationStatus.Rejected => "bg-custom-danger",
+                            _ => "bg-custom-pending"
+                        };
+                    }
+                    <span class="badge @badgeClass px-3 py-2 rounded">@Model.Status</span>
+                </dd>
+            </div>
+
+            @if (Model.Status == ApplicationStatus.SelectedForInterview)
+            {
+                <div class="col-12 px-0">
+                    <div class="interview-box">
+                        <h5 class="text-white mb-3 d-flex align-items-center">
+                            <span class="me-2">📅</span> Interview Scheduling Information
+                        </h5>
+                        <div class="row g-2">
+                            <dt class="col-sm-4 interview-label">Interview Date</dt>
+                            <dd class="col-sm-8 text-white">@Model.InterviewDate?.ToString("dd MMM yyyy")</dd>
+
+                            <dt class="col-sm-4 interview-label">Interview Time</dt>
+                            <dd class="col-sm-8 text-white">@Model.InterviewTime</dd>
+
+                            <dt class="col-sm-4 interview-label">Venue / Link</dt>
+                            <dd class="col-sm-8 text-white mb-0">@Model.InterviewVenue</dd>
+                        </div>
+                    </div>
+                </div>
+            }
+        </dl>
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="User" asp-action="Dashboard" class="btn btn-violet-outline">
+            ← Back to Dashboard
+        </a>
+    </div>
+</div>
